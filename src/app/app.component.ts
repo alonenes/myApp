@@ -12,14 +12,74 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 export class AppComponent {
   public appPages = [
     {
-      title: 'Home',
+      title: 'Home page',
       url: '/home',
       icon: 'home'
     },
     {
-      title: 'List',
+      title: 'Bulletin/Circular/Manual',
       url: '/list',
-      icon: 'list'
+      icon: 'copy'
+    },
+    {
+      title: 'Crew Roster',
+      //url: '/',
+      icon: 'airplane'
+    },
+    {
+      title: 'Crew on flight',
+      //url: '/',
+      icon: 'people'
+    },
+    {
+      title: 'Roster Report',
+      //url: '/',
+      icon: 'calendar'
+    },
+    {
+      title: 'Fatigue form',
+      //url: '/',
+      icon: 'chatbubbles'
+    },
+    {
+      title: 'My Fatigue form',
+      //url: '/',
+      icon: 'chatboxes'
+    },
+    {
+      title: 'Crew Profile',
+      //url: '/',
+      icon: 'person'
+    },
+    {
+      title: 'FDP Calculation',
+      //url: '/',
+      icon: 'calculator'
+    },
+    {
+      title: 'Port Information',
+      //url: '/',
+      icon: 'text'
+    },
+    {
+      title: 'Performance Appraisal',
+      //url: '/',
+      icon: 'checkbox-outline'
+    },
+    {
+      title: 'Cabin Crew Record',
+      //url: '/',
+      icon: 'alert'
+    },
+    {
+      title: 'Cabin Crew Personal Report',
+      //url: '/',
+      icon: 'document'
+    },
+    {
+      title: 'SSQ Report',
+      //url: '/',
+      icon: 'images'
     }
   ];
 

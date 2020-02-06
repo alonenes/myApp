@@ -25,9 +25,9 @@ import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy } ,
-   // File,
-   // FileTransfer,
-   // DocumentViewer
+    File,
+    FileTransfer,
+    DocumentViewer
 
   ],
   bootstrap: [AppComponent]
