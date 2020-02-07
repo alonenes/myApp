@@ -1,9 +1,13 @@
+<!--แสดงผลแถบ Slide Menu-->>
 <ion-app>
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
       <ion-header>
         <ion-toolbar>
-          <ion-title>Menu</ion-title>
+          <!--<ion-title>Menu</ion-title>-->
+          <img src="/assets/thailionair-logo.png" alt=""/>
+          <!--<ion-img [src]="/assets/thailionair-logo.png"></ion-img>-->
+          <!--<a class="navbar-brand" href=""><img src="/public/images/tlm_logo1.png" alt=""></a>-->
         </ion-toolbar>
       </ion-header>
       <ion-content>
@@ -11,9 +15,9 @@
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
             <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
-              <ion-label>
+              <ion-label class="ion-text-wrap">
                 {{p.title}}
-              </ion-label>
+              </ion-label >
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
