@@ -38,7 +38,7 @@ export class ListPage implements OnInit {
   }
    
   openLocalPdf() {
-     let  filePath = this.file.applicationDirectory + 'src/assets';
+     let  filePath = this.file.applicationDirectory + 'www/assets';
      if (this.platform.is('android')) {
        let fakeName = Date.now();
        this.file.copyFile(filePath, 'D5100_EN.pdf', this.file.dataDirectory, `${fakeName}.pdf`).then(result => {
