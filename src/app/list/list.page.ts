@@ -38,7 +38,7 @@ export class ListPage implements OnInit {
   }
    
   openLocalPdf() {
-     let  filePath = this.file.applicationDirectory + 'www/assets';
+     let  filePath = this.file.applicationDirectory + 'src/assets';
      if (this.platform.is('android')) {
        let fakeName = Date.now();
        this.file.copyFile(filePath, 'D5100_EN.pdf', this.file.dataDirectory, `${fakeName}.pdf`).then(result => {
@@ -54,7 +54,19 @@ export class ListPage implements OnInit {
   }
 
   downloadAndOpenPdf() {
+    let downloadUrl = 'https://gdlp01.c-wss.com/gds/6/0300002536/03/PSG11_CUG_EN_03.pdf';
+    let path = 'this.file.dataDirectory';
+    const transfer = this.ft.create();
 
+    transfer.download(downloadUrl, `${path}myfile.pdf`).then(entry => {
+      let url = entry.toURL();
+
+      if (this.platform.is('ios')) {
+        this.document.viewDocument(url, 'application/pdf', {})
+      } else {
+        this.fileOpener.open(url, 'application/pdf');
+      }
+    });
   }
   
 
