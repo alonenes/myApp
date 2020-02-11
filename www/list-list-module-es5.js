@@ -127,6 +127,7 @@ var ListPage = /** @class */ (function () {
     ListPage.prototype.openLocalPdf = function () {
         var _this = this;
         var filePath = this.file.applicationDirectory + 'www/assets';
+        console.log('filePath is ' + filePath);
         if (this.platform.is('android')) {
             var fakeName = Date.now();
             this.file.copyFile(filePath, 'D5100_EN.pdf', this.file.dataDirectory, fakeName + ".pdf").then(function (result) {
@@ -143,10 +144,13 @@ var ListPage = /** @class */ (function () {
     ListPage.prototype.downloadAndOpenPdf = function () {
         var _this = this;
         var downloadUrl = 'https://gdlp01.c-wss.com/gds/6/0300002536/03/PSG11_CUG_EN_03.pdf';
-        var path = 'this.file.dataDirectory';
+        console.log('downloadUrl is ' + downloadUrl);
+        var path = this.file.dataDirectory;
+        console.log('Path is ' + path);
         var transfer = this.ft.create();
         transfer.download(downloadUrl, path + "myfile.pdf").then(function (entry) {
             var url = entry.toURL();
+            console.log('url is ' + url);
             if (_this.platform.is('ios')) {
                 _this.document.viewDocument(url, 'application/pdf', {});
             }

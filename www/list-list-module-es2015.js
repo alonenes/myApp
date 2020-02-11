@@ -123,6 +123,7 @@ let ListPage = class ListPage {
     }
     openLocalPdf() {
         let filePath = this.file.applicationDirectory + 'www/assets';
+        console.log('filePath is ' + filePath);
         if (this.platform.is('android')) {
             let fakeName = Date.now();
             this.file.copyFile(filePath, 'D5100_EN.pdf', this.file.dataDirectory, `${fakeName}.pdf`).then(result => {
@@ -138,10 +139,13 @@ let ListPage = class ListPage {
     }
     downloadAndOpenPdf() {
         let downloadUrl = 'https://gdlp01.c-wss.com/gds/6/0300002536/03/PSG11_CUG_EN_03.pdf';
-        let path = 'this.file.dataDirectory';
+        console.log('downloadUrl is ' + downloadUrl);
+        let path = this.file.dataDirectory;
+        console.log('Path is ' + path);
         const transfer = this.ft.create();
         transfer.download(downloadUrl, `${path}myfile.pdf`).then(entry => {
             let url = entry.toURL();
+            console.log('url is ' + url);
             if (this.platform.is('ios')) {
                 this.document.viewDocument(url, 'application/pdf', {});
             }
