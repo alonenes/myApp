@@ -62,16 +62,12 @@ export class ListPage implements OnInit {
       let url = entry.toURL();
 
       if (this.platform.is('ios')) {
-        this.document.viewDocument(url, 'application/pdf', {})
+        this.document.viewDocument(url, 'application/pdf', {});
       } else {
         this.fileOpener.open(url, 'application/pdf');
       }
     });
   }
-  
-
-  
-
   
 
   ngOnInit() {
