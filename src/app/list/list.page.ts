@@ -55,7 +55,7 @@ export class ListPage implements OnInit {
 
   downloadAndOpenPdf() {
     let downloadUrl = 'https://gdlp01.c-wss.com/gds/6/0300002536/03/PSG11_CUG_EN_03.pdf';
-    let path = 'this.file.dataDirectory';
+    let path = this.file.dataDirectory;
     const transfer = this.ft.create();
 
     transfer.download(downloadUrl, `${path}myfile.pdf`).then(entry => {
