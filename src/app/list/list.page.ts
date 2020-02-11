@@ -55,7 +55,7 @@ export class ListPage implements OnInit {
   }
 
   downloadAndOpenPdf() {
-    let downloadUrl = 'https://gdlp01.c-wss.com/gds/6/0300002536/03/PSG11_CUG_EN_03.pdf';
+    let downloadUrl = 'http://cdic.lionairapp.com/public/documents/pdf/original/Bulletin%20DFO-FS-IM-022_2019%20Revision%20of%20Noise%20Abatement%20Departure%20Procedure.pdf';
      console.log('downloadUrl is '+ downloadUrl);
     let path = this.file.dataDirectory;
      console.log('Path is '+ path);
