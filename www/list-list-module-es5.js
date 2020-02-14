@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n      <ion-menu-button></ion-menu-button>\r\n    </ion-buttons>\r\n    <ion-title>\r\n      List\r\n    </ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content padding>\r\n  <!--<ion-list>\r\n    <ion-item *ngFor=\"let item of items\">\r\n      <ion-icon [name]=\"item.icon\" slot=\"start\"></ion-icon>\r\n      {{item.title}}\r\n      <div class=\"item-note\" slot=\"end\">\r\n        {{item.note}}\r\n      </div>\r\n    </ion-item>\r\n  </ion-list>-->\r\n  \r\n    <!--<div *ngIf=\"selectedItem\" padding>\r\n      You navigated here from <b>{{selectedItem.title }}</b>\r\n    </div>-->\r\n   <ion-button expand=\"full\" (click)=\"openLocalPdf()\">Open Local PDF</ion-button>\r\n   <ion-button expand=\"full\" (click)=\"downloadAndOpenPdf()\">Download and open PDF</ion-button> \r\n</ion-content>\r\n"
+module.exports = "<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n      <ion-menu-button></ion-menu-button>\r\n    </ion-buttons>\r\n    <ion-title>\r\n      Bulletin/Circular/Manual\r\n    </ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content fullscreen>\r\n  <!--<ion-list>\r\n    <ion-item *ngFor=\"let item of items\">\r\n      <ion-icon [name]=\"item.icon\" slot=\"start\"></ion-icon>\r\n      {{item.title}}\r\n      <div class=\"item-note\" slot=\"end\">\r\n        {{item.note}}\r\n      </div>\r\n    </ion-item>\r\n  </ion-list>-->\r\n  \r\n    <!--<div *ngIf=\"selectedItem\" padding>\r\n      You navigated here from <b>{{selectedItem.title }}</b>\r\n    </div>-->\r\n    <ion-card>\r\n      <img src=\"/assets/icon/179483.png\" />\r\n      <ion-card-header>\r\n        <ion-card-subtitle>Category: Bulletin</ion-card-subtitle>\r\n        <ion-card-title>By: Ms. Wutsamon Singsee</ion-card-title>\r\n      </ion-card-header>\r\n      <ion-card-content>\r\n        Description: DFO-CC-IM-007 The tailpipe fire procedures and emergency announcements\r\n      </ion-card-content>\r\n        <ion-button expand=\"block\" color=\"danger\" (click)=\"openLocalPdf()\" >Open Local PDF</ion-button>\r\n        <ion-button expand=\"block\" color=\"danger\" (click)=\"downloadAndOpenPdf()\">Download and open PDF</ion-button>\r\n    </ion-card>\r\n</ion-content>\r\n"
 
 /***/ }),
 
@@ -96,13 +96,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var ListPage = /** @class */ (function () {
-    function ListPage(platform, file, ft, fileOpener, document) {
+    function ListPage(platform, file, ft, fileOpener, document, alertCrtl) {
         this.platform = platform;
         this.file = file;
         this.ft = ft;
         this.fileOpener = fileOpener;
         this.document = document;
+        this.alertCrtl = alertCrtl;
         this.icons = [
             'flask',
             'wifi',
@@ -152,11 +154,34 @@ var ListPage = /** @class */ (function () {
             var url = entry.toURL();
             console.log('url is ' + url);
             if (_this.platform.is('ios')) {
+                console.log(_this.platform.is);
                 _this.document.viewDocument(url, 'application/pdf', {});
             }
             else {
+                console.log(_this.platform.is);
                 _this.fileOpener.open(url, 'application/pdf');
             }
+        });
+    };
+    ListPage.prototype.presentAlert = function () {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            var alert;
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertCrtl.create({
+                            header: '',
+                            subHeader: '',
+                            message: 'This is an alert message.',
+                            buttons: ['Close']
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
         });
     };
     ListPage.prototype.ngOnInit = function () {
@@ -166,7 +191,8 @@ var ListPage = /** @class */ (function () {
         { type: _ionic_native_file_ngx__WEBPACK_IMPORTED_MODULE_3__["File"] },
         { type: _ionic_native_file_transfer_ngx__WEBPACK_IMPORTED_MODULE_4__["FileTransfer"] },
         { type: _ionic_native_file_opener_ngx__WEBPACK_IMPORTED_MODULE_5__["FileOpener"] },
-        { type: _ionic_native_document_viewer_ngx__WEBPACK_IMPORTED_MODULE_6__["DocumentViewer"] }
+        { type: _ionic_native_document_viewer_ngx__WEBPACK_IMPORTED_MODULE_6__["DocumentViewer"] },
+        { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["AlertController"] }
     ]; };
     ListPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -174,8 +200,12 @@ var ListPage = /** @class */ (function () {
             template: __webpack_require__(/*! raw-loader!./list.page.html */ "./node_modules/raw-loader/index.js!./src/app/list/list.page.html"),
             styles: [__webpack_require__(/*! ./list.page.scss */ "./src/app/list/list.page.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"], _ionic_native_file_ngx__WEBPACK_IMPORTED_MODULE_3__["File"], _ionic_native_file_transfer_ngx__WEBPACK_IMPORTED_MODULE_4__["FileTransfer"],
-            _ionic_native_file_opener_ngx__WEBPACK_IMPORTED_MODULE_5__["FileOpener"], _ionic_native_document_viewer_ngx__WEBPACK_IMPORTED_MODULE_6__["DocumentViewer"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"],
+            _ionic_native_file_ngx__WEBPACK_IMPORTED_MODULE_3__["File"],
+            _ionic_native_file_transfer_ngx__WEBPACK_IMPORTED_MODULE_4__["FileTransfer"],
+            _ionic_native_file_opener_ngx__WEBPACK_IMPORTED_MODULE_5__["FileOpener"],
+            _ionic_native_document_viewer_ngx__WEBPACK_IMPORTED_MODULE_6__["DocumentViewer"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["AlertController"]])
     ], ListPage);
     return ListPage;
 }());
