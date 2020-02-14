@@ -65,8 +65,10 @@ export class ListPage implements OnInit {
       let url = entry.toURL();
        console.log('url is '+ url);
       if (this.platform.is('ios')) {
+        console.log(this.platform.is);
         this.document.viewDocument(url, 'application/pdf', {});
       } else {
+        console.log(this.platform.is);
         this.fileOpener.open(url, 'application/pdf');
       }
     });
