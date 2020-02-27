@@ -105,6 +105,7 @@ var ListPage = /** @class */ (function () {
         this.fileOpener = fileOpener;
         this.document = document;
         this.alertCrtl = alertCrtl;
+        this.domain_name = "http://cdic.lionairapp.com";
         this.icons = [
             'flask',
             'wifi',
@@ -134,6 +135,7 @@ var ListPage = /** @class */ (function () {
             var fakeName = Date.now();
             this.file.copyFile(filePath, 'D5100_EN.pdf', this.file.dataDirectory, fakeName + ".pdf").then(function (result) {
                 _this.fileOpener.open(result.nativeURL, 'application/pdf');
+                _this.presentAlert("openLocalPdf", "openning", "");
             });
         }
         else {
@@ -145,7 +147,7 @@ var ListPage = /** @class */ (function () {
     };
     ListPage.prototype.downloadAndOpenPdf = function () {
         var _this = this;
-        var downloadUrl = 'http://cdic.lionairapp.com/public/documents/pdf/original/Bulletin%20DFO-FS-IM-022_2019%20Revision%20of%20Noise%20Abatement%20Departure%20Procedure.pdf';
+        var downloadUrl = this.domain_name + '/public/documents/pdf/1.pdf';
         console.log('downloadUrl is ' + downloadUrl);
         var path = this.file.dataDirectory;
         console.log('Path is ' + path);
@@ -163,19 +165,20 @@ var ListPage = /** @class */ (function () {
             }
         });
     };
-    ListPage.prototype.presentAlert = function () {
+    ListPage.prototype.presentAlert = function (head, subhead, message) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
             var alert;
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.alertCrtl.create({
-                            header: '',
-                            subHeader: '',
-                            message: 'This is an alert message.',
+                            header: head,
+                            subHeader: subhead,
+                            message: message,
                             buttons: ['Close']
                         })];
                     case 1:
                         alert = _a.sent();
+                        console.log("presentAlert is running");
                         return [4 /*yield*/, alert.present()];
                     case 2:
                         _a.sent();

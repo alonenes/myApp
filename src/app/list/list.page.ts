@@ -13,6 +13,9 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['list.page.scss']
 })
 export class ListPage implements OnInit {
+
+  readonly domain_name: string = "http://cdic.lionairapp.com";
+
   private selectedItem: any;
   private icons = [
     'flask',
@@ -49,6 +52,7 @@ export class ListPage implements OnInit {
        let fakeName = Date.now();
        this.file.copyFile(filePath, 'D5100_EN.pdf', this.file.dataDirectory, `${fakeName}.pdf`).then(result => {
           this.fileOpener.open(result.nativeURL, 'application/pdf');
+          this.presentAlert("openLocalPdf","openning","");
        });
      } else {
        const options: DocumentViewerOptions = {
@@ -60,7 +64,7 @@ export class ListPage implements OnInit {
   }
 
   downloadAndOpenPdf() {
-    let downloadUrl = 'http://cdic.lionairapp.com/public/documents/pdf/original/Bulletin%20DFO-FS-IM-022_2019%20Revision%20of%20Noise%20Abatement%20Departure%20Procedure.pdf';
+    let downloadUrl = this.domain_name +'/public/documents/pdf/1.pdf';
       console.log('downloadUrl is '+ downloadUrl);
     let path = this.file.dataDirectory;
       console.log('Path is '+ path);
@@ -80,14 +84,14 @@ export class ListPage implements OnInit {
     });
   }
 
-  async presentAlert() {
+  async presentAlert(head:string,subhead:string,message:string) {
     const alert = await this.alertCrtl.create({
-      header: '',
-      subHeader: '',
-      message: 'This is an alert message.',
+      header: head,
+      subHeader: subhead,
+      message: message,
       buttons: ['Close']
     });
-
+    console.log("presentAlert is running");
     await alert.present();
   }
   

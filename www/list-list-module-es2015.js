@@ -102,6 +102,7 @@ let ListPage = class ListPage {
         this.fileOpener = fileOpener;
         this.document = document;
         this.alertCrtl = alertCrtl;
+        this.domain_name = "http://cdic.lionairapp.com";
         this.icons = [
             'flask',
             'wifi',
@@ -130,6 +131,7 @@ let ListPage = class ListPage {
             let fakeName = Date.now();
             this.file.copyFile(filePath, 'D5100_EN.pdf', this.file.dataDirectory, `${fakeName}.pdf`).then(result => {
                 this.fileOpener.open(result.nativeURL, 'application/pdf');
+                this.presentAlert("openLocalPdf", "openning", "");
             });
         }
         else {
@@ -140,7 +142,7 @@ let ListPage = class ListPage {
         }
     }
     downloadAndOpenPdf() {
-        let downloadUrl = 'http://cdic.lionairapp.com/public/documents/pdf/original/Bulletin%20DFO-FS-IM-022_2019%20Revision%20of%20Noise%20Abatement%20Departure%20Procedure.pdf';
+        let downloadUrl = this.domain_name + '/public/documents/pdf/1.pdf';
         console.log('downloadUrl is ' + downloadUrl);
         let path = this.file.dataDirectory;
         console.log('Path is ' + path);
@@ -158,14 +160,15 @@ let ListPage = class ListPage {
             }
         });
     }
-    presentAlert() {
+    presentAlert(head, subhead, message) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
             const alert = yield this.alertCrtl.create({
-                header: '',
-                subHeader: '',
-                message: 'This is an alert message.',
+                header: head,
+                subHeader: subhead,
+                message: message,
                 buttons: ['Close']
             });
+            console.log("presentAlert is running");
             yield alert.present();
         });
     }
