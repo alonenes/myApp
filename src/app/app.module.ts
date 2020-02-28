@@ -14,6 +14,9 @@ import { FileOpener} from '@ionic-native/file-opener/ngx'
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 import { AlertController } from '@ionic/angular';
+import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
+import { SQLite } from '@ionic-native/sqlite/ngx';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +24,8 @@ import { AlertController } from '@ionic/angular';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [
     StatusBar,
@@ -31,7 +35,9 @@ import { AlertController } from '@ionic/angular';
     FileOpener,
     FileTransfer,
     DocumentViewer,
-    AlertController
+    AlertController,
+    SQLitePorter,
+    SQLite
   ],
   bootstrap: [AppComponent]
 })

@@ -135,7 +135,6 @@ var ListPage = /** @class */ (function () {
             var fakeName = Date.now();
             this.file.copyFile(filePath, 'D5100_EN.pdf', this.file.dataDirectory, fakeName + ".pdf").then(function (result) {
                 _this.fileOpener.open(result.nativeURL, 'application/pdf');
-                _this.presentAlert("openLocalPdf", "openning", "");
             });
         }
         else {
@@ -148,10 +147,11 @@ var ListPage = /** @class */ (function () {
     ListPage.prototype.downloadAndOpenPdf = function () {
         var _this = this;
         var downloadUrl = this.domain_name + '/public/documents/pdf/1.pdf';
-        console.log('downloadUrl is ' + downloadUrl);
         var path = this.file.dataDirectory;
-        console.log('Path is ' + path);
         var transfer = this.ft.create();
+        console.log('downloadUrl is ' + downloadUrl);
+        console.log('Path is ' + path);
+        console.log('Transfer is ' + transfer);
         transfer.download(downloadUrl, path + "myfile.pdf").then(function (entry) {
             var url = entry.toURL();
             console.log('url is ' + url);

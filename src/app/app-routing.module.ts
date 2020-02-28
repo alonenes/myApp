@@ -12,8 +12,12 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'list',
-    loadChildren: () => import('./list/list.module').then(m => m.ListPageModule)
+    path: 'pdflists',
+    loadChildren: () => import('./pdflists/pdflists.module').then(m => m.PdflistsPageModule)
+  },
+  {
+    path: 'pdflists/:attach_pdf_id',
+    loadChildren: () => import('./pdflist/pdflist.module').then(m => m.PdflistPageModule)
   }
 ];
 

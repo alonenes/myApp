@@ -18,7 +18,7 @@ export class AppComponent {
     },
     {
       title: 'Bulletin/Circular/Manual',
-      url: '/list',
+      url: '/pdflists',
       icon: 'copy'
     },
     {

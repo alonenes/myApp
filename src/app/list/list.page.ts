@@ -52,7 +52,6 @@ export class ListPage implements OnInit {
        let fakeName = Date.now();
        this.file.copyFile(filePath, 'D5100_EN.pdf', this.file.dataDirectory, `${fakeName}.pdf`).then(result => {
           this.fileOpener.open(result.nativeURL, 'application/pdf');
-          this.presentAlert("openLocalPdf","openning","");
        });
      } else {
        const options: DocumentViewerOptions = {
@@ -63,16 +62,18 @@ export class ListPage implements OnInit {
 
   }
 
-  downloadAndOpenPdf() {
-    let downloadUrl = this.domain_name +'/public/documents/pdf/1.pdf';
-      console.log('downloadUrl is '+ downloadUrl);
-    let path = this.file.dataDirectory;
-      console.log('Path is '+ path);
+  downloadAndOpenPdf(PathPdf:string,Pdfnam:string) {
+    let downloadUrl = this.domain_name +PathPdf; 
+    let path = this.file.dataDirectory +Pdfnam;
     const transfer = this.ft.create();
 
-    transfer.download(downloadUrl, `${path}myfile.pdf`).then(entry => {
+    console.log('downloadUrl is '+ downloadUrl);
+    console.log('Path is '+ path);
+    console.log('Transfer is '+ transfer);
+
+    transfer.download(downloadUrl, `${path}`).then(entry => { 
       let url = entry.toURL();
-       console.log('url is '+ url);
+    console.log('url is '+ url);
         
       if (this.platform.is('ios')) {
         console.log(this.platform.is);

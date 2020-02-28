@@ -131,7 +131,6 @@ let ListPage = class ListPage {
             let fakeName = Date.now();
             this.file.copyFile(filePath, 'D5100_EN.pdf', this.file.dataDirectory, `${fakeName}.pdf`).then(result => {
                 this.fileOpener.open(result.nativeURL, 'application/pdf');
-                this.presentAlert("openLocalPdf", "openning", "");
             });
         }
         else {
@@ -143,10 +142,11 @@ let ListPage = class ListPage {
     }
     downloadAndOpenPdf() {
         let downloadUrl = this.domain_name + '/public/documents/pdf/1.pdf';
-        console.log('downloadUrl is ' + downloadUrl);
         let path = this.file.dataDirectory;
-        console.log('Path is ' + path);
         const transfer = this.ft.create();
+        console.log('downloadUrl is ' + downloadUrl);
+        console.log('Path is ' + path);
+        console.log('Transfer is ' + transfer);
         transfer.download(downloadUrl, `${path}myfile.pdf`).then(entry => {
             let url = entry.toURL();
             console.log('url is ' + url);
