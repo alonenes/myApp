@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: 'pdflists/:attach_pdf_id',
     loadChildren: () => import('./pdflist/pdflist.module').then(m => m.PdflistPageModule)
-  }
+  },
 ];
 
 @NgModule({

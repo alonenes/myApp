@@ -13,7 +13,7 @@ export class PdflistsPage implements OnInit {
 
   pdf = {};
 
-  selectedView = '';
+  selectedView = 'Bulletin';
 
   constructor(private db: DatabaseService) { }
 

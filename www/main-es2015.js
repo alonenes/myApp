@@ -478,7 +478,7 @@ const routes = [
     {
         path: 'pdflists/:attach_pdf_id',
         loadChildren: () => Promise.all(/*! import() | pdflist-pdflist-module */[__webpack_require__.e("common"), __webpack_require__.e("pdflist-pdflist-module")]).then(__webpack_require__.bind(null, /*! ./pdflist/pdflist.module */ "./src/app/pdflist/pdflist.module.ts")).then(m => m.PdflistPageModule)
-    }
+    },
 ];
 let AppRoutingModule = class AppRoutingModule {
 };

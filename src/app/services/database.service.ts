@@ -86,7 +86,7 @@ export class DatabaseService {
         employee_name: data.rows.item(0).employee_name,                   // ชื่อพนักงานที่อัพโหลด Upload By EMP
         attach_pdf_description: data.rows.item(0).attach_pdf_description, // คำอธิบาย File PDF
         attach_pdf_datetime: data.rows.item(0).attach_pdf_datetime,       // วันที่ Upload File
-        admin_type: data.rows.item(0).admin_typ
+        admin_type: data.rows.item(0).admin_type
       }
     });
   }

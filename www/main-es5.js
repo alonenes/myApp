@@ -484,7 +484,7 @@ var routes = [
     {
         path: 'pdflists/:attach_pdf_id',
         loadChildren: function () { return Promise.all(/*! import() | pdflist-pdflist-module */[__webpack_require__.e("common"), __webpack_require__.e("pdflist-pdflist-module")]).then(__webpack_require__.bind(null, /*! ./pdflist/pdflist.module */ "./src/app/pdflist/pdflist.module.ts")).then(function (m) { return m.PdflistPageModule; }); }
-    }
+    },
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {

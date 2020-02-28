@@ -769,7 +769,7 @@ let DatabaseService = class DatabaseService {
                 employee_name: data.rows.item(0).employee_name,
                 attach_pdf_description: data.rows.item(0).attach_pdf_description,
                 attach_pdf_datetime: data.rows.item(0).attach_pdf_datetime,
-                admin_type: data.rows.item(0).admin_typ
+                admin_type: data.rows.item(0).admin_type
             };
         });
     }

@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar >
     <ion-buttons slot="start">
       <ion-back-button defaultHref="developers"></ion-back-button>
     </ion-buttons>
@@ -11,13 +11,13 @@
   <ion-card *ngIf="pdf">
     <img src="/assets/icon/179483.png" />
     <ion-card-header>
-      <ion-card-subtitle>Upload Date: {{}}</ion-card-subtitle>
-      <ion-card-title>By: Ms. Wutsamon Singsee</ion-card-title>
+      <ion-card-subtitle>Upload Date: {{pdf.attach_pdf_datetime}}</ion-card-subtitle>
+      <ion-card-subtitle>By: {{pdf.admin_type}}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      Description: DFO-CC-IM-007 The tailpipe fire procedures and emergency announcements
+      Description: {{pdf.attach_pdf_description}}
     </ion-card-content>
-      <ion-button expand="block" color="danger" (click)="openLocalPdf()" >Open Local PDF</ion-button>
-      <ion-button expand="block" color="danger" (click)="downloadAndOpenPdf()">Download and open PDF</ion-button>
+      <ion-button expand="block" color="danger" (click)="downloadPdf()" >Open Local PDF</ion-button>
+      <ion-button expand="block" color="danger" (click)="OpenLocalPdf()">Download PDF </ion-button>
   </ion-card>
 </ion-content>
