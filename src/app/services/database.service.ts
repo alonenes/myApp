@@ -19,6 +19,7 @@ export interface Pdf {
   providedIn: 'root'
 })
 export class DatabaseService {
+
   private database: SQLiteObject;
   private dbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
   
@@ -60,7 +61,7 @@ export class DatabaseService {
  
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
-          let skills = [];
+          
           pdfs.push({ 
                       attach_pdf_id: data.rows.item(i).attach_pdf_id,                   // Primary
                       menu_category_id: data.rows.item(i).menu_category_id,             // Category
@@ -84,7 +85,7 @@ export class DatabaseService {
         employee_code: data.rows.item(0).employee_code,                   // รหัสพนักงานที่อัพโหลด Upload By CODE
         employee_name: data.rows.item(0).employee_name,                   // ชื่อพนักงานที่อัพโหลด Upload By EMP
         attach_pdf_description: data.rows.item(0).attach_pdf_description, // คำอธิบาย File PDF
-        attach_pdf_datetime: data.rows.item(0).attach_pdf_datetime,        // วันที่ Upload File
+        attach_pdf_datetime: data.rows.item(0).attach_pdf_datetime,       // วันที่ Upload File
         admin_type: data.rows.item(0).admin_typ
       }
     });

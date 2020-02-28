@@ -4,7 +4,7 @@ admin_type TEXT,
 menu_category_name TEXT,
 menu_category_level INTEGER,
 menu_orderby INTEGER
-)
+);
 
 INSERT or IGNORE  INTO menu_category (menu_category_id, admin_type, menu_category_name, menu_category_level, menu_orderby) VALUES(47, 'admin cabin', 'Bulletin', NULL, 2);
 INSERT or IGNORE  INTO menu_category (menu_category_id, admin_type, menu_category_name, menu_category_level, menu_orderby) VALUES(48, 'admin cabin', 'Cabin Crew Circular Information', NULL, 3);
