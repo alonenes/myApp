@@ -753,7 +753,8 @@ let DatabaseService = class DatabaseService {
                         employee_name: data.rows.item(i).employee_name,
                         attach_pdf_description: data.rows.item(i).attach_pdf_description,
                         attach_pdf_datetime: data.rows.item(i).attach_pdf_datetime,
-                        admin_type: data.rows.item(i).admin_type
+                        admin_type: data.rows.item(i).admin_type,
+                        attach_pdf_path: data.rows.item(i).attach_pdf_path
                     });
                 }
             }
@@ -769,7 +770,8 @@ let DatabaseService = class DatabaseService {
                 employee_name: data.rows.item(0).employee_name,
                 attach_pdf_description: data.rows.item(0).attach_pdf_description,
                 attach_pdf_datetime: data.rows.item(0).attach_pdf_datetime,
-                admin_type: data.rows.item(0).admin_type
+                admin_type: data.rows.item(0).admin_type,
+                attach_pdf_path: data.rows.item(0).attach_pdf_path
             };
         });
     }

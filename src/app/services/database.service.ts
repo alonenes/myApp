@@ -13,6 +13,7 @@ export interface Pdf {
   attach_pdf_description: string,       // คำอธิบาย File PDF
   attach_pdf_datetime: string,          // วันที่ Upload File
   admin_type: string                    // ฝ่ายที่ Upload File
+  attach_pdf_path: string               // Path File
 }
 
 @Injectable({
@@ -69,7 +70,8 @@ export class DatabaseService {
                       employee_name: data.rows.item(i).employee_name,                   // ชื่อพนักงานที่อัพโหลด Upload By EMP
                       attach_pdf_description: data.rows.item(i).attach_pdf_description, // คำอธิบาย File PDF
                       attach_pdf_datetime: data.rows.item(i).attach_pdf_datetime,       // วันที่ Upload File
-                      admin_type: data.rows.item(i).admin_type 
+                      admin_type: data.rows.item(i).admin_type,
+                      attach_pdf_path: data.rows.item(i).attach_pdf_path
            });
         }
       }
@@ -86,7 +88,8 @@ export class DatabaseService {
         employee_name: data.rows.item(0).employee_name,                   // ชื่อพนักงานที่อัพโหลด Upload By EMP
         attach_pdf_description: data.rows.item(0).attach_pdf_description, // คำอธิบาย File PDF
         attach_pdf_datetime: data.rows.item(0).attach_pdf_datetime,       // วันที่ Upload File
-        admin_type: data.rows.item(0).admin_type
+        admin_type: data.rows.item(0).admin_type,
+        attach_pdf_path: data.rows.item(0).attach_pdf_path
       }
     });
   }
