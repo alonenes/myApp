@@ -13,6 +13,9 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['list.page.scss']
 })
 export class ListPage implements OnInit {
+
+  readonly domain_name: string = "http://cdic.lionairapp.com";
+
   private selectedItem: any;
   private icons = [
     'flask',
@@ -59,16 +62,18 @@ export class ListPage implements OnInit {
 
   }
 
-  downloadAndOpenPdf() {
-    let downloadUrl = 'http://cdic.lionairapp.com/public/documents/pdf/original/Bulletin%20DFO-FS-IM-022_2019%20Revision%20of%20Noise%20Abatement%20Departure%20Procedure.pdf';
-      console.log('downloadUrl is '+ downloadUrl);
-    let path = this.file.dataDirectory;
-      console.log('Path is '+ path);
+  downloadAndOpenPdf(PathPdf:string,Pdfnam:string) {
+    let downloadUrl = this.domain_name +PathPdf; 
+    let path = this.file.dataDirectory +Pdfnam;
     const transfer = this.ft.create();
 
-    transfer.download(downloadUrl, `${path}myfile.pdf`).then(entry => {
+    console.log('downloadUrl is '+ downloadUrl);
+    console.log('Path is '+ path);
+    console.log('Transfer is '+ transfer);
+
+    transfer.download(downloadUrl, `${path}`).then(entry => { 
       let url = entry.toURL();
-       console.log('url is '+ url);
+    console.log('url is '+ url);
         
       if (this.platform.is('ios')) {
         console.log(this.platform.is);
@@ -80,14 +85,14 @@ export class ListPage implements OnInit {
     });
   }
 
-  async presentAlert() {
+  async presentAlert(head:string,subhead:string,message:string) {
     const alert = await this.alertCrtl.create({
-      header: '',
-      subHeader: '',
-      message: 'This is an alert message.',
+      header: head,
+      subHeader: subhead,
+      message: message,
       buttons: ['Close']
     });
-
+    console.log("presentAlert is running");
     await alert.present();
   }
   

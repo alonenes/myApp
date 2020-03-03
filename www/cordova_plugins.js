@@ -245,6 +245,22 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "window.StatusBar"
       ]
+    },
+    {
+      "id": "cordova-sqlite-storage.SQLitePlugin",
+      "file": "plugins/cordova-sqlite-storage/www/SQLitePlugin.js",
+      "pluginId": "cordova-sqlite-storage",
+      "clobbers": [
+        "SQLitePlugin"
+      ]
+    },
+    {
+      "id": "uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter",
+      "file": "plugins/uk.co.workingedge.cordova.plugin.sqliteporter/www/sqlitePorter.js",
+      "pluginId": "uk.co.workingedge.cordova.plugin.sqliteporter",
+      "clobbers": [
+        "cordova.plugins.sqlitePorter"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -257,6 +273,8 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-ionic-webview": "4.1.3",
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-statusbar": "2.4.2",
-    "cordova-plugin-whitelist": "1.3.4"
+    "cordova-plugin-whitelist": "1.3.4",
+    "cordova-sqlite-storage": "4.0.0",
+    "uk.co.workingedge.cordova.plugin.sqliteporter": "1.1.1"
   };
 });

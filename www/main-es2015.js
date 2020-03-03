@@ -472,9 +472,13 @@ const routes = [
         loadChildren: () => __webpack_require__.e(/*! import() | home-home-module */ "home-home-module").then(__webpack_require__.bind(null, /*! ./home/home.module */ "./src/app/home/home.module.ts")).then(m => m.HomePageModule)
     },
     {
-        path: 'list',
-        loadChildren: () => __webpack_require__.e(/*! import() | list-list-module */ "list-list-module").then(__webpack_require__.bind(null, /*! ./list/list.module */ "./src/app/list/list.module.ts")).then(m => m.ListPageModule)
-    }
+        path: 'pdflists',
+        loadChildren: () => Promise.all(/*! import() | pdflists-pdflists-module */[__webpack_require__.e("common"), __webpack_require__.e("pdflists-pdflists-module")]).then(__webpack_require__.bind(null, /*! ./pdflists/pdflists.module */ "./src/app/pdflists/pdflists.module.ts")).then(m => m.PdflistsPageModule)
+    },
+    {
+        path: 'pdflists/:attach_pdf_id',
+        loadChildren: () => Promise.all(/*! import() | pdflist-pdflist-module */[__webpack_require__.e("common"), __webpack_require__.e("pdflist-pdflist-module")]).then(__webpack_require__.bind(null, /*! ./pdflist/pdflist.module */ "./src/app/pdflist/pdflist.module.ts")).then(m => m.PdflistPageModule)
+    },
 ];
 let AppRoutingModule = class AppRoutingModule {
 };
@@ -535,7 +539,7 @@ let AppComponent = class AppComponent {
             },
             {
                 title: 'Bulletin/Circular/Manual',
-                url: '/list',
+                url: '/pdflists',
                 icon: 'copy'
             },
             {
@@ -651,6 +655,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_native_file_opener_ngx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @ionic-native/file-opener/ngx */ "./node_modules/@ionic-native/file-opener/ngx/index.js");
 /* harmony import */ var _ionic_native_file_transfer_ngx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @ionic-native/file-transfer/ngx */ "./node_modules/@ionic-native/file-transfer/ngx/index.js");
 /* harmony import */ var _ionic_native_document_viewer_ngx__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @ionic-native/document-viewer/ngx */ "./node_modules/@ionic-native/document-viewer/ngx/index.js");
+/* harmony import */ var _ionic_native_sqlite_porter_ngx__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @ionic-native/sqlite-porter/ngx */ "./node_modules/@ionic-native/sqlite-porter/ngx/index.js");
+/* harmony import */ var _ionic_native_sqlite_ngx__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @ionic-native/sqlite/ngx */ "./node_modules/@ionic-native/sqlite/ngx/index.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+
+
+
 
 
 
@@ -674,7 +684,8 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         imports: [
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonicModule"].forRoot(),
-            _app_routing_module__WEBPACK_IMPORTED_MODULE_8__["AppRoutingModule"]
+            _app_routing_module__WEBPACK_IMPORTED_MODULE_8__["AppRoutingModule"],
+            _angular_common_http__WEBPACK_IMPORTED_MODULE_15__["HttpClientModule"]
         ],
         providers: [
             _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_6__["StatusBar"],
@@ -684,7 +695,9 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _ionic_native_file_opener_ngx__WEBPACK_IMPORTED_MODULE_10__["FileOpener"],
             _ionic_native_file_transfer_ngx__WEBPACK_IMPORTED_MODULE_11__["FileTransfer"],
             _ionic_native_document_viewer_ngx__WEBPACK_IMPORTED_MODULE_12__["DocumentViewer"],
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"]
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"],
+            _ionic_native_sqlite_porter_ngx__WEBPACK_IMPORTED_MODULE_13__["SQLitePorter"],
+            _ionic_native_sqlite_ngx__WEBPACK_IMPORTED_MODULE_14__["SQLite"]
         ],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]]
     })

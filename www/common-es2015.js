@@ -679,6 +679,118 @@ const findCheckedOption = (el, tagName) => {
 
 
 
+/***/ }),
+
+/***/ "./src/app/services/database.service.ts":
+/*!**********************************************!*\
+  !*** ./src/app/services/database.service.ts ***!
+  \**********************************************/
+/*! exports provided: DatabaseService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DatabaseService", function() { return DatabaseService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var _ionic_native_sqlite_porter_ngx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic-native/sqlite-porter/ngx */ "./node_modules/@ionic-native/sqlite-porter/ngx/index.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+/* harmony import */ var _ionic_native_sqlite_ngx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic-native/sqlite/ngx */ "./node_modules/@ionic-native/sqlite/ngx/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+
+
+
+
+
+
+
+let DatabaseService = class DatabaseService {
+    constructor(plt, sqlitePorter, sqlite, http) {
+        this.plt = plt;
+        this.sqlitePorter = sqlitePorter;
+        this.sqlite = sqlite;
+        this.http = http;
+        this.dbReady = new rxjs__WEBPACK_IMPORTED_MODULE_6__["BehaviorSubject"](false);
+        this.pdfs = new rxjs__WEBPACK_IMPORTED_MODULE_6__["BehaviorSubject"]([]);
+        this.plt.ready().then(() => {
+            this.sqlite.create({
+                name: 'developers.db',
+                location: 'default'
+            })
+                .then((db) => {
+                this.database = db;
+                this.seedDatabase();
+            });
+        });
+    }
+    seedDatabase() {
+        this.http.get('assets/seed.sql', { responseType: 'text' })
+            .subscribe(sql => {
+            this.sqlitePorter.importSqlToDb(this.database, sql)
+                .then(_ => {
+                this.loadPdf();
+                this.dbReady.next(true);
+            })
+                .catch(e => console.error(e));
+        });
+    }
+    getDatabaseState() {
+        return this.dbReady.asObservable();
+    }
+    getPdfs() {
+        return this.pdfs.asObservable();
+    }
+    loadPdf() {
+        return this.database.executeSql('SELECT * FROM attach_pdf ', []).then(data => {
+            let pdfs = [];
+            if (data.rows.length > 0) {
+                for (var i = 0; i < data.rows.length; i++) {
+                    pdfs.push({
+                        attach_pdf_id: data.rows.item(i).attach_pdf_id,
+                        menu_category_id: data.rows.item(i).menu_category_id,
+                        employee_code: data.rows.item(i).employee_code,
+                        employee_name: data.rows.item(i).employee_name,
+                        attach_pdf_description: data.rows.item(i).attach_pdf_description,
+                        attach_pdf_datetime: data.rows.item(i).attach_pdf_datetime,
+                        admin_type: data.rows.item(i).admin_type,
+                        attach_pdf_path: data.rows.item(i).attach_pdf_path
+                    });
+                }
+            }
+            this.pdfs.next(pdfs);
+        });
+    }
+    getPdf(attach_pdf_id) {
+        return this.database.executeSql('SELECT * FROM attach_pdf WHERE attach_pdf_id = ?', [attach_pdf_id]).then(data => {
+            return {
+                attach_pdf_id: data.rows.item(0).attach_pdf_id,
+                menu_category_id: data.rows.item(0).menu_category_id,
+                employee_code: data.rows.item(0).employee_code,
+                employee_name: data.rows.item(0).employee_name,
+                attach_pdf_description: data.rows.item(0).attach_pdf_description,
+                attach_pdf_datetime: data.rows.item(0).attach_pdf_datetime,
+                admin_type: data.rows.item(0).admin_type,
+                attach_pdf_path: data.rows.item(0).attach_pdf_path
+            };
+        });
+    }
+};
+DatabaseService.ctorParameters = () => [
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"] },
+    { type: _ionic_native_sqlite_porter_ngx__WEBPACK_IMPORTED_MODULE_3__["SQLitePorter"] },
+    { type: _ionic_native_sqlite_ngx__WEBPACK_IMPORTED_MODULE_5__["SQLite"] },
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpClient"] }
+];
+DatabaseService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+        providedIn: 'root'
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"], _ionic_native_sqlite_porter_ngx__WEBPACK_IMPORTED_MODULE_3__["SQLitePorter"], _ionic_native_sqlite_ngx__WEBPACK_IMPORTED_MODULE_5__["SQLite"], _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpClient"]])
+], DatabaseService);
+
+
+
 /***/ })
 
 }]);
