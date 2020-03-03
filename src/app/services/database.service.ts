@@ -59,8 +59,7 @@ export class DatabaseService {
     return this.pdfs.asObservable();
   }
   loadPdfs() {
-    console.log("loadPDF ACTIVE!!")
-    return this.database.executeSql('SELECT * FROM cdic.attach_pdf WHERE  attach_pdf_active = ?', [1]).then(data => {
+    return this.database.executeSql('SELECT * FROM attach_pdf WHERE  attach_pdf_active = ?', [1]).then(data => {
       let pdfs: Pdf[] = [];
  
       if (data.rows.length > 0) {
@@ -82,6 +81,7 @@ export class DatabaseService {
       }
       this.pdfs.next(pdfs);
     });
+    console.log("loadPDF ACTIVE!!")
   }
   getPdf(attach_pdf_id): Promise<Pdf> {
     return this.database.executeSql('SELECT * FROM attach_pdf WHERE attach_pdf_id = ?', [attach_pdf_id]).then(data => {
@@ -110,7 +110,8 @@ export class DatabaseService {
   // }
   //รอปรับปรุง ใช้เพื่อUpdate DB
   updateURLpath(pdf:Pdf,url:string) {
-    return this.database.executeSql(`UPDATE attach_pdf SET url_path = ? WHERE id = ${pdf.attach_pdf_id}`, [url]).then(data => {
+    let data = [url]
+    return this.database.executeSql(`UPDATE attach_pdf SET url_path = ? WHERE attach_pdf_id = ${pdf.attach_pdf_id}`, [data]).then(data => {
       this.loadPdfs();
     })
   }

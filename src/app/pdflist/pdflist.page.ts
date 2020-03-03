@@ -63,14 +63,12 @@ export class PdflistPage implements OnInit {
   }
 
   OpenPDF(Pdfurl:string) {
- 
+      
       // ****IOS****   
       if (this.platform.is('ios')) {
-        console.log(this.platform.is);
         this.document.viewDocument(Pdfurl, 'application/pdf', {});
       // ***Android***
       } else {
-        console.log(this.platform.is);
         this.fileOpener.open(Pdfurl, 'application/pdf');
       }
     
