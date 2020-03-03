@@ -30,7 +30,8 @@ attach_by_fb INTEGER,
 attach_by_fa INTEGER,
 usercrewgroup TEXT,
 attach_pdf_active INTEGER,
-download_pdf_date DATE 
+download_pdf_date DATE,
+url_path TEXT 
 );
 
 INSERT or IGNORE  INTO attach_pdf (attach_pdf_id, menu_category_id, employee_code, employee_name, admin_type, attach_pdf_path, attach_pdf_size, attach_pdf_originalname, attach_pdf_description, attach_pdf_datetime, attach_by_cb, attach_by_ca, attach_by_fb, attach_by_fa, usercrewgroup, attach_pdf_active) VALUES(1, 48, 'TL130272', 'Mrs. Janejira Nimmanheminda', 'Admin Cabin', '/public/documents/pdf/1.pdf', 1332717, 'CCCI045_Portable Oxygen Concentrators.pdf', 'CCCI045_Portable Oxygen Concentrators', '2018-11-30 17:18:17.0', '1', '1', '0', '0', '["CB"]', '1');

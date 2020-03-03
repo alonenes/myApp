@@ -10,8 +10,8 @@
 <ion-content class="padding">
   <ion-item >
     <ion-label>Category</ion-label>
-    <ion-select interface="popover" [(ngModel)]="selectedView">
-      <ion-select-option value="Bulletin">Bulletin</ion-select-option>
+    <ion-select interface="popover" [(ngModel)]="selectedView" >
+      <ion-select-option value="Bulletin" >Bulletin</ion-select-option>
       <ion-select-option value="Circular">Cabin Crew Circular Information</ion-select-option>
       <ion-select-option value="Concern">Cabin Crew Concern Manual and Document</ion-select-option>
       <ion-select-option value="Manufacturer">Manufacturer Manuals</ion-select-option>
@@ -32,7 +32,8 @@
             <p>By:{{ pdf.admin_type }}</p>
             <p>Category:</p>
             <p>Description: {{pdf.attach_pdf_description}}</p>
-            <p>Download date: </p>
+            <p>Download date: {{pdf.download_pdf_date}}</p>
+            
           </ion-label>
         </ion-item>
       </ion-list>
