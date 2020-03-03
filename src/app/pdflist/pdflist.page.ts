@@ -38,7 +38,7 @@ export class PdflistPage implements OnInit {
     });
   }
 
-  downloadPdf(Pdfpath:string,Pdfnam:string) {
+  DownloadPDF(Pdfpath:string,Pdfnam:string) {
     let downloadUrl = this.domain_name +Pdfpath; 
     let path = this.file.dataDirectory +Pdfnam;
     const transfer = this.ft.create();
@@ -50,33 +50,30 @@ export class PdflistPage implements OnInit {
     transfer.download(downloadUrl, `${path}`).then(entry => {
       let url = entry.toURL();
        console.log('url is '+ url);
+
+       this.db.updateURLpath(this.pdf,url).then(async (res) => {
+        let toast = await this.toast.create({
+          message: 'Download Success',
+          duration: 2000
+        });
+        toast.present();
+      });
  
     });
   }
 
-  OpenLocalPdf(Pdfpath:string,Pdfnam:string) {
-    let downloadUrl = this.domain_name +Pdfpath; 
-    let path = this.file.dataDirectory +Pdfnam;
-    const transfer = this.ft.create();
- 
-      console.log('downloadUrl is '+ downloadUrl);
-      console.log('Path is '+ path);
-      console.log('Transfer is '+ transfer);
-      
-    transfer.download(downloadUrl, `${path}`).then(entry => {
-      let url = entry.toURL();
-       console.log('url is '+ url);
+  OpenPDF(Pdfurl:string) {
  
       // ****IOS****   
       if (this.platform.is('ios')) {
         console.log(this.platform.is);
-        this.document.viewDocument(url, 'application/pdf', {});
+        this.document.viewDocument(Pdfurl, 'application/pdf', {});
       // ***Android***
       } else {
         console.log(this.platform.is);
-        this.fileOpener.open(url, 'application/pdf');
+        this.fileOpener.open(Pdfurl, 'application/pdf');
       }
-    });
+    
   }
 
   /*delete() {
@@ -84,5 +81,14 @@ export class PdflistPage implements OnInit {
       this.router.navigateByUrl('/');
     });
   }*/
-
+  // updateDeveloper() {
+   
+  //   this.db.updateDeveloper(this.pdf).then(async (res) => {
+  //     let toast = await this.toast.create({
+  //       message: 'Developer updated',
+  //       duration: 3000
+  //     });
+  //     toast.present();
+  //   });
+  // }
 }

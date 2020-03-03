@@ -17,7 +17,7 @@
     <ion-card-content>
       Description: {{pdf.attach_pdf_description}}
     </ion-card-content>
-      <ion-button expand="block" color="danger" (click)="downloadPdf()" >Open Local PDF</ion-button>
-      <ion-button expand="block" color="danger" (click)="OpenLocalPdf()">Download PDF </ion-button>
+      <ion-button expand="block" color="danger" (click)="DownloadPDF(pdf.attach_pdf_path,pdf.attach_pdf_description)" >DownloadPDF</ion-button>
+      <ion-button expand="block" color="danger" (click)="OpenLocalPdf(pdf.url_path)">OpenPDF</ion-button>
   </ion-card>
 </ion-content>

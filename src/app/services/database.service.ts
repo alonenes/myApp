@@ -12,7 +12,10 @@ export interface Pdf {
   employee_name: string,                // ชื่อพนักงานที่อัพโหลด Upload By EMP
   attach_pdf_description: string,       // คำอธิบาย File PDF
   attach_pdf_datetime: string,          // วันที่ Upload File
-  admin_type: string                    // ฝ่ายที่ Upload File
+  admin_type: string,                   // ฝ่ายที่ Upload File
+  attach_pdf_path: string               // Path PDF
+  download_pdf_date: string,            // วันที่ Download
+  url_path : string
 }
 
 @Injectable({
@@ -43,7 +46,7 @@ export class DatabaseService {
     .subscribe(sql => {
       this.sqlitePorter.importSqlToDb(this.database, sql)
         .then(_ => {
-          this.loadPdf();
+          this.loadPdfs();
           this.dbReady.next(true);
         })
         .catch(e => console.error(e));
@@ -55,8 +58,9 @@ export class DatabaseService {
   getPdfs(): Observable<Pdf[]> {
     return this.pdfs.asObservable();
   }
-  loadPdf() {
-    return this.database.executeSql('SELECT * FROM attach_pdf ', []).then(data => {
+  loadPdfs() {
+    console.log("loadPDF ACTIVE!!")
+    return this.database.executeSql('SELECT * FROM cdic.attach_pdf WHERE  attach_pdf_active = ?', [1]).then(data => {
       let pdfs: Pdf[] = [];
  
       if (data.rows.length > 0) {
@@ -69,7 +73,10 @@ export class DatabaseService {
                       employee_name: data.rows.item(i).employee_name,                   // ชื่อพนักงานที่อัพโหลด Upload By EMP
                       attach_pdf_description: data.rows.item(i).attach_pdf_description, // คำอธิบาย File PDF
                       attach_pdf_datetime: data.rows.item(i).attach_pdf_datetime,       // วันที่ Upload File
-                      admin_type: data.rows.item(i).admin_type 
+                      admin_type: data.rows.item(i).admin_type,
+                      download_pdf_date: data.rows.item(i).download_pdf_date,
+                      url_path: data.rows.item(i).url_path,
+                      attach_pdf_path: data.rows.item(i).attach_pdf_path
            });
         }
       }
@@ -86,10 +93,14 @@ export class DatabaseService {
         employee_name: data.rows.item(0).employee_name,                   // ชื่อพนักงานที่อัพโหลด Upload By EMP
         attach_pdf_description: data.rows.item(0).attach_pdf_description, // คำอธิบาย File PDF
         attach_pdf_datetime: data.rows.item(0).attach_pdf_datetime,       // วันที่ Upload File
-        admin_type: data.rows.item(0).admin_type
+        admin_type: data.rows.item(0).admin_type,
+        download_pdf_date: data.rows.item(0).download_pdf_date,
+        url_path: data.rows.item(0).url_path,
+        attach_pdf_path: data.rows.item(0).attach_pdf_path
       }
     });
   }
+  
   /*รอปรับปรุง ใช้เพื่อลบ DB*/ 
   // deleteDeveloper(id) {
   //   return this.database.executeSql('DELETE FROM developer WHERE id = ?', [id]).then(_ => {
@@ -97,11 +108,10 @@ export class DatabaseService {
   //     this.loadProducts();
   //   });
   // }
-  /*รอปรับปรุง ใช้เพื่อUpdate DB
-  updateDeveloper(dev: Dev) {
-    let data = [dev.name, JSON.stringify(dev.skills), dev.img];
-    return this.database.executeSql(`UPDATE developer SET name = ?, skills = ?, img = ? WHERE id = ${dev.id}`, data).then(data => {
-      this.loadDevelopers();
+  //รอปรับปรุง ใช้เพื่อUpdate DB
+  updateURLpath(pdf:Pdf,url:string) {
+    return this.database.executeSql(`UPDATE attach_pdf SET url_path = ? WHERE id = ${pdf.attach_pdf_id}`, [url]).then(data => {
+      this.loadPdfs();
     })
-  }*/
+  }
 }
