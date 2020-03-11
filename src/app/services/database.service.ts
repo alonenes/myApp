@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { HttpClient } from '@angular/common/http';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { downloaddata } from '../../models/Rest_PDF';
-import { JsonPipe } from '@angular/common';
+import { File } from '@ionic-native/file/ngx';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+
 
 export interface Pdf {
   attach_pdf_id: number,                // Primary
@@ -30,9 +33,17 @@ export class DatabaseService {
   
   pdfs = new BehaviorSubject([]);
   mPdf:downloaddata;
+
+  readonly domain_name: string = "http://cdic.lionairapp.com";
   
 
-  constructor(private plt: Platform, private sqlitePorter: SQLitePorter, private sqlite: SQLite, private http: HttpClient) {
+  constructor(private plt: Platform, 
+              private sqlitePorter: SQLitePorter, 
+              private sqlite: SQLite, 
+              private http: HttpClient,
+              private file: File, 
+              private ft: FileTransfer,
+              private toast: ToastController) {
     this.plt.ready().then(() => {
       this.sqlite.create({
         name: 'developers.db',
@@ -120,11 +131,22 @@ export class DatabaseService {
   //   });
   // }
   //รอปรับปรุง ใช้เพื่อUpdate DB
-  updateURLpath(pdf:Pdf,url:string) {
+  updateURLpath(pdf:any,url:string) {
     let data = [url]
     return this.database.executeSql(`UPDATE attach_pdf SET url_path = ? WHERE attach_id = ${pdf.attach_pdf_id}`, [data]).then(data => {
       this.loadPdfsfromDB();
     })
+  }
+
+  updateURLpaths(pdf:any,url:string) {
+    // let data = [url,pdf]
+    console.log('attach id ' + pdf + 'url : ' + url);
+    return this.database.executeSql(`UPDATE attach_pdf SET url_path = ? WHERE attach_id = ?`, [url,pdf]).then(data => {
+      console.log('Update path Success!!')
+      this.loadPdfsfromDB();
+    }).catch(e =>{
+      console.log('Update Path Error!! :'+JSON.stringify(e))
+    });
   }
 
   feed():Observable<downloaddata>{
@@ -164,16 +186,16 @@ export class DatabaseService {
            result.data[count].attach_path
           ]).then(() => {
             console.log('Row Inserted!');
+            
             // alert('Row Inserted!');
           })
           .catch(e => {
             console.log("error " + JSON.stringify(e))
             // alert("error " + JSON.stringify(e))
           });
-          // INSERT or IGNORE  INTO attach_pdf 
-          // (attach_pdf_id, menu_category_id, employee_code, employee_name, admin_type, 
-          //attach_pdf_path, attach_pdf_size, attach_pdf_originalname, attach_pdf_description, 
-          //attach_pdf_datetime, attach_by_cb, attach_by_ca, attach_by_fb, attach_by_fa, usercrewgroup, attach_pdf_active)
+          this.Download_ROWs_Update(result.data[count].attach_path,
+                                    result.data[count].attach_description,
+                                    result.data[count].attach_id);
           count++;
         }
       }
@@ -181,5 +203,30 @@ export class DatabaseService {
       this.loadPdfsfromDB();
      });
   }
-  
+
+  Download_ROWs_Update(Pdfpath:string,Pdfnam:string,Pdfid:string) {
+    let downloadUrl = this.domain_name +Pdfpath; 
+    let path = this.file.dataDirectory +Pdfnam;
+    const transfer = this.ft.create();
+ 
+      console.log('downloadUrl is '+ downloadUrl);
+      console.log('Path is '+ path);
+      console.log('Transfer is '+ transfer);
+      
+    transfer.download(downloadUrl, `${path}`).then(entry => {
+      let url = entry.toURL();
+       console.log('url is '+ url);
+
+       this.updateURLpaths(Pdfid,url).then(async (res) => {
+        let toast = await this.toast.create({
+          message: 'Download Success',
+          duration: 2000
+        });
+        toast.present();
+        
+      });
+ 
+    });
+  }
+
 }
