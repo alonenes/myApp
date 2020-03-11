@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { downloaddata } from '../../models/Rest_PDF';
+import { JsonPipe } from '@angular/common';
 
 export interface Pdf {
   attach_pdf_id: number,                // Primary
@@ -65,14 +66,14 @@ export class DatabaseService {
   }
 
   loadPdfsfromDB() {
-    return this.database.executeSql('SELECT * FROM attach_pdf WHERE  attach_pdf_active = ?', [1]).then(data => {
+    return this.database.executeSql('SELECT * FROM attach_pdf ', []).then(data => {
       let pdfs: Pdf[] = [];
  
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
           
           pdfs.push({ 
-                      attach_pdf_id: data.rows.item(i).attach_pdf_id,                   // Primary
+                      attach_pdf_id: data.rows.item(i).attach_id,                   // Primary
                       menu_category_id: data.rows.item(i).menu_category_id,             // Category
                       employee_code: data.rows.item(i).employee_code,                   // รหัสพนักงานที่อัพโหลด Upload By CODE
                       employee_name: data.rows.item(i).employee_name,                   // ชื่อพนักงานที่อัพโหลด Upload By EMP
@@ -87,14 +88,17 @@ export class DatabaseService {
       }
       this.pdfs.next(pdfs);
       console.log("loadPDF ACTIVE!!")
+    }).catch(e => {
+      console.log("error " + JSON.stringify(e))
+      // alert("error " + JSON.stringify(e))
     });
   }
 
   getPdf(attach_pdf_id): Promise<Pdf> {
-    return this.database.executeSql('SELECT * FROM attach_pdf WHERE attach_pdf_id = ?', [attach_pdf_id]).then(data => {
+    return this.database.executeSql('SELECT * FROM attach_pdf WHERE attach_id = ?', [attach_pdf_id]).then(data => {
 
       return {
-        attach_pdf_id: data.rows.item(0).attach_pdf_id,                   // Primary
+        attach_pdf_id: data.rows.item(0).attach_id,                   // Primary
         menu_category_id: data.rows.item(0).menu_category_id,             // Category
         employee_code: data.rows.item(0).employee_code,                   // รหัสพนักงานที่อัพโหลด Upload By CODE
         employee_name: data.rows.item(0).employee_name,                   // ชื่อพนักงานที่อัพโหลด Upload By EMP
@@ -118,7 +122,7 @@ export class DatabaseService {
   //รอปรับปรุง ใช้เพื่อUpdate DB
   updateURLpath(pdf:Pdf,url:string) {
     let data = [url]
-    return this.database.executeSql(`UPDATE attach_pdf SET url_path = ? WHERE attach_pdf_id = ${pdf.attach_pdf_id}`, [data]).then(data => {
+    return this.database.executeSql(`UPDATE attach_pdf SET url_path = ? WHERE attach_id = ${pdf.attach_pdf_id}`, [data]).then(data => {
       this.loadPdfsfromDB();
     })
   }
@@ -136,49 +140,44 @@ export class DatabaseService {
 
       for(key in result.data) {
         if(result.data.hasOwnProperty(key)) {
+          console.log('attach_id : ' + result.data[count].attach_id);
           this.database.executeSql(`INSERT or IGNORE INTO attach_pdf ( 
-            attach_id ,              
-            menu_category_id ,
-            menu_category_name ,
-            menu_category_level ,
-            employee_code ,
-            employee_name ,
-            admin_type ,
-            attach_pdf_path ,
-            attach_pdf_size ,
-            attach_pdf_originalname ,
-            attach_pdf_description ,
-            attach_pdf_datetime ,
-            usercrewgroup 
+            attach_id,
+            menu_category_id,
+            menu_category_name,
+            employee_code,
+            employee_name,
+            attach_pdf_description,
+            attach_pdf_datetime,
+            admin_type,
+            attach_pdf_path
           ) VALUES 
-          (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          (?,?,?,?,?,?,?,?,?);`,
           [result.data[count].attach_id,
            result.data[count].menu_category_id,
            result.data[count].menu_category_name,
-           result.data[count].menu_category_level,
            result.data[count].employee_code,
            result.data[count].employee_name,
-           result.data[count].admin_type,
-           result.data[count].attach_path,
-           result.data[count].attach_size,
-           result.data[count].attach_original_name,
            result.data[count].attach_description,
            result.data[count].attach_datetime,
-           result.data[count].usercrewgroup
+           result.data[count].admin_type,
+           result.data[count].attach_path
           ]).then(() => {
-            alert('Row Inserted!');
+            console.log('Row Inserted!');
+            // alert('Row Inserted!');
           })
           .catch(e => {
-            alert("error " + JSON.stringify(e))
+            console.log("error " + JSON.stringify(e))
+            // alert("error " + JSON.stringify(e))
           });
           // INSERT or IGNORE  INTO attach_pdf 
           // (attach_pdf_id, menu_category_id, employee_code, employee_name, admin_type, 
           //attach_pdf_path, attach_pdf_size, attach_pdf_originalname, attach_pdf_description, 
           //attach_pdf_datetime, attach_by_cb, attach_by_ca, attach_by_fb, attach_by_fa, usercrewgroup, attach_pdf_active)
-          console.log(result.data[count].attach_id);
           count++;
         }
       }
+      alert('Row '+(count)+' Inserted !');
       this.loadPdfsfromDB();
      });
   }

@@ -57,13 +57,6 @@ export class PdflistPage implements OnInit {
           duration: 2000
         });
         toast.present();
-      });
- 
-    });
-  }
-
-  OpenPDF(Pdfurl:string) {
-
         this.route.paramMap.subscribe(params => {
           let pdfId = params.get('attach_pdf_id');
     
@@ -71,6 +64,14 @@ export class PdflistPage implements OnInit {
             this.pdf = data;
           });
         });
+      });
+ 
+    });
+
+    
+
+  }
+  OpenPDF(Pdfurl:string) {
         
       // ****IOS****   
       if (this.platform.is('ios')) {
