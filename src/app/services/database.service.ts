@@ -124,11 +124,13 @@ export class DatabaseService {
   }
 
   feed():Observable<downloaddata>{
+    console.log('Feed Active!!');
     let url = "https://cdic.lionairapp.com/webservice/data/getfile/id/TL152554";
     return this.http.get<downloaddata>(url);
   }
 
   InsertFromRest(){
+    console.log('InsertFromRest Active!!');
     this.feed().subscribe(result =>{
       let key, count = 0;
 
