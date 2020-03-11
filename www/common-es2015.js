@@ -729,7 +729,7 @@ let DatabaseService = class DatabaseService {
             .subscribe(sql => {
             this.sqlitePorter.importSqlToDb(this.database, sql)
                 .then(_ => {
-                this.loadPdf();
+                this.loadPdfsfromDB();
                 this.dbReady.next(true);
             })
                 .catch(e => console.error(e));
@@ -741,8 +741,8 @@ let DatabaseService = class DatabaseService {
     getPdfs() {
         return this.pdfs.asObservable();
     }
-    loadPdf() {
-        return this.database.executeSql('SELECT * FROM attach_pdf ', []).then(data => {
+    loadPdfsfromDB() {
+        return this.database.executeSql('SELECT * FROM attach_pdf WHERE  attach_pdf_active = ?', [1]).then(data => {
             let pdfs = [];
             if (data.rows.length > 0) {
                 for (var i = 0; i < data.rows.length; i++) {
@@ -754,11 +754,14 @@ let DatabaseService = class DatabaseService {
                         attach_pdf_description: data.rows.item(i).attach_pdf_description,
                         attach_pdf_datetime: data.rows.item(i).attach_pdf_datetime,
                         admin_type: data.rows.item(i).admin_type,
+                        download_pdf_date: data.rows.item(i).download_pdf_date,
+                        url_path: data.rows.item(i).url_path,
                         attach_pdf_path: data.rows.item(i).attach_pdf_path
                     });
                 }
             }
             this.pdfs.next(pdfs);
+            console.log("loadPDF ACTIVE!!");
         });
     }
     getPdf(attach_pdf_id) {
@@ -771,8 +774,77 @@ let DatabaseService = class DatabaseService {
                 attach_pdf_description: data.rows.item(0).attach_pdf_description,
                 attach_pdf_datetime: data.rows.item(0).attach_pdf_datetime,
                 admin_type: data.rows.item(0).admin_type,
+                download_pdf_date: data.rows.item(0).download_pdf_date,
+                url_path: data.rows.item(0).url_path,
                 attach_pdf_path: data.rows.item(0).attach_pdf_path
             };
+        });
+    }
+    /*รอปรับปรุง ใช้เพื่อลบ DB*/
+    // deleteDeveloper(id) {
+    //   return this.database.executeSql('DELETE FROM developer WHERE id = ?', [id]).then(_ => {
+    //     this.loadDevelopers();
+    //     this.loadProducts();
+    //   });
+    // }
+    //รอปรับปรุง ใช้เพื่อUpdate DB
+    updateURLpath(pdf, url) {
+        let data = [url];
+        return this.database.executeSql(`UPDATE attach_pdf SET url_path = ? WHERE attach_pdf_id = ${pdf.attach_pdf_id}`, [data]).then(data => {
+            this.loadPdfsfromDB();
+        });
+    }
+    feed() {
+        let url = "https://cdic.lionairapp.com/webservice/data/getfile/id/TL152554";
+        return this.http.get(url);
+    }
+    InsertFromRest() {
+        this.feed().subscribe(result => {
+            let key, count = 0;
+            for (key in result.data) {
+                if (result.data.hasOwnProperty(key)) {
+                    this.database.executeSql(`INSERT or IGNORE INTO attach_pdf ( 
+            attach_id ,              
+            menu_category_id ,
+            menu_category_name ,
+            menu_category_level ,
+            employee_code ,
+            employee_name ,
+            admin_type ,
+            attach_pdf_path ,
+            attach_pdf_size ,
+            attach_pdf_originalname ,
+            attach_pdf_description ,
+            attach_pdf_datetime ,
+            usercrewgroup 
+          ) VALUES 
+          (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, [result.data[count].attach_id,
+                        result.data[count].menu_category_id,
+                        result.data[count].menu_category_name,
+                        result.data[count].menu_category_level,
+                        result.data[count].employee_code,
+                        result.data[count].employee_name,
+                        result.data[count].admin_type,
+                        result.data[count].attach_path,
+                        result.data[count].attach_size,
+                        result.data[count].attach_original_name,
+                        result.data[count].attach_description,
+                        result.data[count].attach_datetime,
+                        result.data[count].usercrewgroup
+                    ]).then(() => {
+                        alert('Row Inserted!');
+                    })
+                        .catch(e => {
+                        alert("error " + JSON.stringify(e));
+                    });
+                    // INSERT or IGNORE  INTO attach_pdf 
+                    // (attach_pdf_id, menu_category_id, employee_code, employee_name, admin_type, 
+                    //attach_pdf_path, attach_pdf_size, attach_pdf_originalname, attach_pdf_description, 
+                    //attach_pdf_datetime, attach_by_cb, attach_by_ca, attach_by_fb, attach_by_fa, usercrewgroup, attach_pdf_active)
+                    console.log(result.data[count].attach_id);
+                    count++;
+                }
+            }
         });
     }
 };

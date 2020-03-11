@@ -4,6 +4,7 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { HttpClient } from '@angular/common/http';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { downloaddata } from '../../models/Rest_PDF';
 
 export interface Pdf {
   attach_pdf_id: number,                // Primary
@@ -27,6 +28,7 @@ export class DatabaseService {
   private dbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
   
   pdfs = new BehaviorSubject([]);
+  mPdf:downloaddata;
   
 
   constructor(private plt: Platform, private sqlitePorter: SQLitePorter, private sqlite: SQLite, private http: HttpClient) {
@@ -41,24 +43,28 @@ export class DatabaseService {
       });
     });
   }
+
   seedDatabase() {
     this.http.get('assets/seed.sql', { responseType: 'text'})
     .subscribe(sql => {
       this.sqlitePorter.importSqlToDb(this.database, sql)
         .then(_ => {
-          this.loadPdfs();
+          this.InsertFromRest();
           this.dbReady.next(true);
         })
         .catch(e => console.error(e));
     });
   }
+
   getDatabaseState() {
     return this.dbReady.asObservable();
   }
+
   getPdfs(): Observable<Pdf[]> {
     return this.pdfs.asObservable();
   }
-  loadPdfs() {
+
+  loadPdfsfromDB() {
     return this.database.executeSql('SELECT * FROM attach_pdf WHERE  attach_pdf_active = ?', [1]).then(data => {
       let pdfs: Pdf[] = [];
  
@@ -80,9 +86,10 @@ export class DatabaseService {
         }
       }
       this.pdfs.next(pdfs);
+      console.log("loadPDF ACTIVE!!")
     });
-    console.log("loadPDF ACTIVE!!")
   }
+
   getPdf(attach_pdf_id): Promise<Pdf> {
     return this.database.executeSql('SELECT * FROM attach_pdf WHERE attach_pdf_id = ?', [attach_pdf_id]).then(data => {
 
@@ -112,7 +119,66 @@ export class DatabaseService {
   updateURLpath(pdf:Pdf,url:string) {
     let data = [url]
     return this.database.executeSql(`UPDATE attach_pdf SET url_path = ? WHERE attach_pdf_id = ${pdf.attach_pdf_id}`, [data]).then(data => {
-      this.loadPdfs();
+      this.loadPdfsfromDB();
     })
   }
+
+  feed():Observable<downloaddata>{
+    let url = "https://cdic.lionairapp.com/webservice/data/getfile/id/TL152554";
+    return this.http.get<downloaddata>(url);
+  }
+
+  InsertFromRest(){
+    this.feed().subscribe(result =>{
+      let key, count = 0;
+
+      for(key in result.data) {
+        if(result.data.hasOwnProperty(key)) {
+          this.database.executeSql(`INSERT or IGNORE INTO attach_pdf ( 
+            attach_id ,              
+            menu_category_id ,
+            menu_category_name ,
+            menu_category_level ,
+            employee_code ,
+            employee_name ,
+            admin_type ,
+            attach_pdf_path ,
+            attach_pdf_size ,
+            attach_pdf_originalname ,
+            attach_pdf_description ,
+            attach_pdf_datetime ,
+            usercrewgroup 
+          ) VALUES 
+          (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          [result.data[count].attach_id,
+           result.data[count].menu_category_id,
+           result.data[count].menu_category_name,
+           result.data[count].menu_category_level,
+           result.data[count].employee_code,
+           result.data[count].employee_name,
+           result.data[count].admin_type,
+           result.data[count].attach_path,
+           result.data[count].attach_size,
+           result.data[count].attach_original_name,
+           result.data[count].attach_description,
+           result.data[count].attach_datetime,
+           result.data[count].usercrewgroup
+          ]).then(() => {
+            alert('Row Inserted!');
+          })
+          .catch(e => {
+            alert("error " + JSON.stringify(e))
+          });
+          // INSERT or IGNORE  INTO attach_pdf 
+          // (attach_pdf_id, menu_category_id, employee_code, employee_name, admin_type, 
+          //attach_pdf_path, attach_pdf_size, attach_pdf_originalname, attach_pdf_description, 
+          //attach_pdf_datetime, attach_by_cb, attach_by_ca, attach_by_fb, attach_by_fa, usercrewgroup, attach_pdf_active)
+          console.log(result.data[count].attach_id);
+          count++;
+        }
+      }
+      this.loadPdfsfromDB();
+     });
+  }
+  
 }

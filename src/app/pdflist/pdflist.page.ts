@@ -63,7 +63,15 @@ export class PdflistPage implements OnInit {
   }
 
   OpenPDF(Pdfurl:string) {
-      
+
+        this.route.paramMap.subscribe(params => {
+          let pdfId = params.get('attach_pdf_id');
+    
+          this.db.getPdf(pdfId).then(data => {
+            this.pdf = data;
+          });
+        });
+        
       // ****IOS****   
       if (this.platform.is('ios')) {
         this.document.viewDocument(Pdfurl, 'application/pdf', {});
