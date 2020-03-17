@@ -151,7 +151,7 @@ export class DatabaseService {
 
   feed():Observable<downloaddata>{
     console.log('Feed Active!!');
-    let url = "https://cdic.lionairapp.com/webservice/data/getfile/id/TL152554";
+    let url = "http://cdic.lionairapp.com/webservice/data/getfile/id/TL152554";
     return this.http.get<downloaddata>(url);
   }
 
